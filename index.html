@@ -1,0 +1,179 @@
+
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" />
+<script src="https://code.jquery.com/jquery-3.4.1.min.js" type="text/javascript"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" type="text/javascript" defer></script>
+
+<script type="text/javascript" defer>
+    let html = '<div class="modal fade" id="myModal">' +
+                    '<div class="modal-dialog modal-lg" role="document">' +
+                        '<div class="modal-content">' +
+                            '<div class="modal-body text-center">' +
+                                '<button type="button" class="close" data-dismiss="modal" aria-label="Close">' +
+                                    '<span aria-hidden="true">×</span>' +
+                                '</button>' +
+                                '<div class="h11">$500</div>' + 
+                                '<div class="h22">We GUARANTEE to be your highest cash offer or WE WILL SEND YOU $500!*</div>' +
+                                    '<form action="">' +
+                                        '<fieldset>' +
+                                            '<div class="form-row">' +
+                                                '<div class="col-md-12 mb-2 required">' +
+                                                    '<label class="text-left col-sm-12 p0 control-label">Property Address</label>' +
+                                                    '<input type="text" name="property_address" class="autocomplete-us1 form-control" id="myModalproperty_address" required autocomplete="on"/>' +
+                                                '</div>' +
+                                            '</div>' +
+                                            '<div class="form-row">' +
+                                                '<div class="col-sm-6 ginput_container ginput_container_phone">' +
+                                                    '<label class="text-left p0 col-sm-12 control-label" for="myModalphone">Phone</label>' +
+                                                    '<input type="text" id="myModalphone" name="phone" class="form-control" />' +
+                                                '</div>' + 
+                                                '<div class="col-sm-6 required">' +
+                                                    '<label class="text-left p0 col-sm-12 control-label">Email</label>' +
+                                                    '<input type="email" id="myModalemail" name="email" class="form-control" required />' +
+                                                '</div>' +                                                
+                                            '</div>' +
+                                        '</fieldset>' +
+                                    '</form>' +
+                                '<button type="button" class="btn h33 button">Yes, I want $500. Click Here</button>' +
+                                '<p class="h44">*Terms & Conditions Apply</p>' +
+                            '</div>' +
+                        '</div>' +
+                    '</div>' +
+                '</div>';
+
+    $('html').append(html)
+    
+    $("html").on("mouseleave", function () {
+        $('#myModal').modal('show')
+    });
+    
+
+    $('div, span, label, input').removeClass('error-border error-color');
+    $('.error2').remove();
+        
+    $('.h33.button').on('click', function () {
+        $('div, span, label, input').removeClass('error-border error-color');
+        $('.error2').remove();
+        let bool = true;
+        let error_message = '<div class="text-danger validation_error error2">There was a problem with your submission. Errors have been highlighted below.</div>';
+        if(!$('#myModalproperty_address').val()) {
+            $('#myModalproperty_address').addClass('error-border')
+            $('[href="#myModalproperty_address"]').addClass('error-color')
+            bool = false
+        } 
+        if(!$('#myModalemail').val() || !validateEmail($('#myModalemail').val())) {
+            $('#myModalemail').addClass('error-border')
+            $('[href="#myModalemail"]').addClass('error-color')
+            bool = false
+        }
+
+        if($('#myModalphone').val().length > 1 && $('#myModalphone').val().length != 10) {
+            $('#myModalphone').addClass('error-border')
+            $('[href="#myModalphone"]').addClass('error-color')
+            bool = false
+        }
+
+        if(bool) {
+            let url = 'https://www.trustedhousebuyers.com/step-2/';
+            localStorage.setItem('property_address', $('#myModalproperty_address').val());     
+            localStorage.setItem('email', $('#myModalemail').val());
+            localStorage.setItem('phone', $('#myModalphone').val());
+            window.location.href = url            
+        } else {
+            $('.h22').after(error_message)
+        }
+    })
+    if(location.href == 'https://www.trustedhousebuyers.com/step-2/' && (localStorage.getItem('property_address') != 'undefined' || localStorage.getItem('property_address') != '')) {
+        $('[name="input_7.1"]').val(localStorage.getItem('property_address'))        
+        $('[name="input_3"]').val(localStorage.getItem('phone'))
+        $('[name="input_2"]').val(localStorage.getItem('email'))
+        localStorage.setItem('property_address', '')
+        localStorage.setItem('email', '')
+        localStorage.setItem('phone', '')
+    }
+
+    function validateEmail(email) {
+        var re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+        return re.test(String(email).toLowerCase());
+    }
+
+    $(window).ready(function () {
+        $('#myModal').modal('show')
+    })    
+</script>
+
+<style>
+    #myModal .error-border, #myModal .error-border:hover {
+        border-color: #dc3545;
+    }
+    #myModal .error-color, #myModal .error-color:hover {
+        color: #dc3545;
+    }
+    .p0 {
+        padding: 0;
+    }
+    fieldset {
+        border: 2px groove;
+        border-radius: 5px;
+        padding: 15px;
+    }
+    div.required .control-label:not(span):after, td.required:after {
+        content: ' *';
+        color: #F00;
+        font-weight: bold;
+    }
+    .close {
+        position: absolute;
+        right: 5px;
+        top: 0;
+        transform: rotate(15deg);
+        font-size: 52px;
+    }
+    #myModal .h11, #myModal .h22 {
+        font-family: calibri;
+        font-weight: bolder;        
+    }
+    #myModal .h11, #myModal .h22, .h33, .h44 {
+        /*color: #1F497D;*/
+        color: #003366;
+    }
+    .h11 {
+        font-size: 92px;
+    } 
+    .h33, .h22 {
+        font-size: 36px;
+    }
+    .h22 {
+        margin-top: 0;
+    }
+    .h33, .h44 {
+        font-family: Liberation Sans, sans-serif;
+    }
+    .h44 {
+        font-size: 18px;        
+    }
+    .h33, .h44 {
+        font-weight: bolder;
+    }
+    #myModal .button {
+        background-color: #003366;
+        color: #ccc;
+        padding: 0;
+        line-height: 1;
+        border-radius: 5px;
+    }
+    #myModal .modal-body, .h44 {
+        background-color: #D9D9D9;
+        /*background-color: #A6A6A6;*/
+    }
+    #myModal .modal-body {
+        padding: 35px;
+    }
+    #myModal input {
+        border: 1px solid #4a4747;
+    }
+    .validation_error {
+        padding: 10px;
+    }
+</style>
+
+<!-- <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyB2i2KX5ru6WrcHWD90IDP7GIQvb2f0K&libraries=places"></script> -->
